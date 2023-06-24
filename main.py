@@ -5,7 +5,8 @@ import sys
 from io import BytesIO
 from pathlib import Path
 
-import PyPDF2
+# https://pypdf.readthedocs.io/en/latest/
+import pypdf
 import pyttsx3
 from PyPDF2 import PdfReader
 from pyttsx3 import Engine
@@ -23,12 +24,15 @@ if __name__ == '__main__':
     outputFilePath: Path = pathlib.Path(outputFilename)
     outputFilePath.unlink(missing_ok=True)
 
+    inputFilename: str = 'book.pdf'
+    inputFilePath: Path = pathlib.Path(inputFilename)
+
     pdfStream: BytesIO = None
     pdfReader: PdfReader = None
     speaker: Engine = None
-    with Path.open('book.pdf', 'rb') as pdfFile:
-        pdfStream = BytesIO(pdfFile.read())
-        pdfReader = PyPDF2.PdfReader(pdfStream)
+
+    with inputFilePath.open() as pdfFile:
+        pdfReader = PdfReader(inputFilePath)
         speaker = pyttsx3.init()
         # process each individual page
         page_num: int = 0
